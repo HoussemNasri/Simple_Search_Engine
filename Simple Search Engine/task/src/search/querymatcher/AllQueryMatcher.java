@@ -4,15 +4,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import search.analyzer.Analyzer;
 import search.analyzer.StandardAnalyzer;
 
-public class AllQueryMatcher<T> extends QueryMatcher<T> {
+public class AllQueryMatcher extends QueryMatcher {
   public AllQueryMatcher(
-      List<T> database, StandardAnalyzer queryAnalyzer, Analyzer<T> dataAnalyzer) {
-    super(database, queryAnalyzer, dataAnalyzer);
+          List<Document> database, StandardAnalyzer queryAnalyzer) {
+    super(database, queryAnalyzer);
   }
 
   @Override

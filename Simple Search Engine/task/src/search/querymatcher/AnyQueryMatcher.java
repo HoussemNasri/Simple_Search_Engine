@@ -5,13 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import search.analyzer.Analyzer;
 import search.analyzer.StandardAnalyzer;
 
-public class AnyQueryMatcher<T> extends QueryMatcher<T> {
+public class AnyQueryMatcher extends QueryMatcher {
   public AnyQueryMatcher(
-      List<T> database, StandardAnalyzer queryAnalyzer, Analyzer<T> dataAnalyzer) {
-    super(database, queryAnalyzer, dataAnalyzer);
+          List<Document> database, StandardAnalyzer queryAnalyzer) {
+    super(database, queryAnalyzer);
   }
 
   @Override

@@ -6,25 +6,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import search.analyzer.Analyzer;
 import search.analyzer.StandardAnalyzer;
 
-public class NoneQueryMatcher<T> extends QueryMatcher<T> {
+public class NoneQueryMatcher extends QueryMatcher {
 
-  public NoneQueryMatcher(
-      List<T> database, StandardAnalyzer queryAnalyzer, Analyzer<T> dataAnalyzer) {
-    super(database, queryAnalyzer, dataAnalyzer);
+  public NoneQueryMatcher(List<Document> database, StandardAnalyzer queryAnalyzer) {
+    super(database, queryAnalyzer);
   }
 
   @Override
   public Set<Integer> match(String query) {
     Set<Integer> matched = new HashSet<>(getAllIndexes());
-    matched.removeAll(
-        new AnyQueryMatcher<>(getDatabase(), getQueryAnalyzer(), getDataAnalyzer()).match(query));
+    matched.removeAll(new AnyQueryMatcher(getDocumentList(), getQueryAnalyzer()).match(query));
     return matched;
   }
 
   private Set<Integer> getAllIndexes() {
-    return IntStream.range(0, getDatabase().size()).boxed().collect(Collectors.toSet());
+    return IntStream.range(0, getDocumentList().size()).boxed().collect(Collectors.toSet());
   }
 }

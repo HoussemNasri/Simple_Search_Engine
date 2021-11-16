@@ -7,20 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import search.analyzer.Analyzer;
 import search.analyzer.StandardAnalyzer;
 
-public abstract class QueryMatcher<T> {
+public abstract class QueryMatcher {
   private final Map<String, Set<Integer>> invertedIndex = new HashMap<>();
 
   private final StandardAnalyzer queryAnalyzer;
-  private final Analyzer<T> dataAnalyzer;
-  private final List<T> database;
+  private final List<Document> database;
 
-  public QueryMatcher(List<T> database, StandardAnalyzer queryAnalyzer, Analyzer<T> dataAnalyzer) {
-    this.database = database;
+  public QueryMatcher(List<Document> documentList, StandardAnalyzer queryAnalyzer) {
+    this.database = documentList;
     this.queryAnalyzer = queryAnalyzer;
-    this.dataAnalyzer = dataAnalyzer;
     startIndexing();
   }
 
@@ -36,12 +33,8 @@ public abstract class QueryMatcher<T> {
     return invertedIndex.getOrDefault(normalize(word), Collections.emptySet());
   }
 
-  protected List<T> getDatabase() {
+  protected List<Document> getDocumentList() {
     return database;
-  }
-
-  protected Analyzer<T> getDataAnalyzer() {
-    return dataAnalyzer;
   }
 
   protected StandardAnalyzer getQueryAnalyzer() {
@@ -68,8 +61,8 @@ public abstract class QueryMatcher<T> {
   private void startIndexing() {
     for (int i = 0; i < database.size(); i++) {
       final int finalI = i;
-      T person = database.get(i);
-      dataAnalyzer.analyze(person).forEach(token -> putToken(token, finalI));
+      Document document = database.get(i);
+      document.getWords().forEach(word -> putToken(word, finalI));
     }
   }
 }
